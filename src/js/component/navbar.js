@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
@@ -6,7 +6,7 @@ import StarWarsImage from "../../img/StarWars.png"
 
 export const Navbar = () => {
 
-	const {store, actions} = useContext(Context);
+	const { store, actions } = useContext(Context);
 
 	return (
 		<nav className="navbar navbar-light bg-light mb-3">
@@ -20,16 +20,20 @@ export const Navbar = () => {
 					Favorites ({store.favoritesList.length})
 				</button>
 				<ul className="dropdown-menu dropdown-menu-end">
-					{store.favoritesList.map((favorite, index) => (
-						<li key={index} className="d-flex">
-							<Link to={"/" + favorite.type + "Details/" + favorite.uid}>
-								<a className="dropdown-item text-primary" href="#">{favorite.name}</a>
-							</Link>
-							<button type="button" className="btn ms-auto" onClick={() => actions.removeFromFavorites({type: favorite.type, uid : favorite.uid, name : favorite.name}) }>
-								<i className="fa-solid fa-trash-can"></i>
-							</button>
-						</li>
-					))}
+					{store.favoritesList.length == 0 ?
+						<li className="d-flex justify-content-center">(empty)</li>
+						:
+						store.favoritesList.map((favorite, index) => (
+							<li key={index} className="d-flex">
+								<Link to={"/" + favorite.type + "Details/" + favorite.uid}>
+									<a className="dropdown-item text-primary" href="#">{favorite.name}</a>
+								</Link>
+								<button type="button" className="btn ms-auto" onClick={() => actions.removeFromFavorites({ type: favorite.type, uid: favorite.uid, name: favorite.name })}>
+									<i className="fa-solid fa-trash-can"></i>
+								</button>
+							</li>
+						))
+					}
 				</ul>
 			</div>
 		</nav>
