@@ -1,16 +1,36 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
+
+import StarWarsImage from "../../img/StarWars.png"
 
 export const Navbar = () => {
+
+	const {store, actions} = useContext(Context);
+
 	return (
 		<nav className="navbar navbar-light bg-light mb-3">
 			<Link to="/">
-				<span className="navbar-brand mb-0 h1">React Boilerplate</span>
+				<span className="navbar-brand mb-0 h1 ms-5">
+					<img src={StarWarsImage} alt="Star Wars Logo" style={{ maxHeight: "50px" }} />
+				</span>
 			</Link>
-			<div className="ml-auto">
-				<Link to="/demo">
-					<button className="btn btn-primary">Check the Context in action</button>
-				</Link>
+			<div className="btn-group me-5">
+				<button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+					Favorites ({store.favoritesList.length})
+				</button>
+				<ul className="dropdown-menu dropdown-menu-end">
+					{store.favoritesList.map((favorite, index) => (
+						<li key={index} className="d-flex">
+							<Link to={"/" + favorite.type + "Details/" + favorite.uid}>
+								<a className="dropdown-item text-primary" href="#">{favorite.name}</a>
+							</Link>
+							<button type="button" className="btn ms-auto" onClick={() => actions.removeFromFavorites({type: favorite.type, uid : favorite.uid, name : favorite.name}) }>
+								<i className="fa-solid fa-trash-can"></i>
+							</button>
+						</li>
+					))}
+				</ul>
 			</div>
 		</nav>
 	);
